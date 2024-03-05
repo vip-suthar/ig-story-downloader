@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "Story Downloader",
+  "author": "Vipin",
+  "description": "This extension downloads stories from Instagram",
+  "version": "1.0.0",
+  "host_permissions": [
+    "*://*.instagram.com/*",
+    "*://*.cdninstagram.com/*",
+    "*://*.fbcdn.net/*"
+  ],
+  "permissions": ["activeTab", "storage", "downloads"],
+
+  "background": {
+    "service_worker": "service_worker/index.js",
+    "type": "module"
+  },
+  "action": {
+    "default_icon": {
+      "16": "images/logo.jpg",
+      "48": "images/logo.jpg",
+      "128": "images/logo.jpg"
+    },
+    "default_title": "Story Downloader",
+    "default_popup": "popup/index.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.instagram.com/*"],
+      "js": ["content_scripts/content.js"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": ["*://*.instagram.com/*"],
+      "js": ["content_scripts/inject.js"],
+      "world": "MAIN",
+      "run_at": "document_start"
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}
